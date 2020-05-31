@@ -1,0 +1,33 @@
+{
+    "config": {
+        "name": "Sample JSON data",
+        "author": "@redhg"
+    },
+    "screens": [
+        {
+            "id": "screen1",
+            "type": "screen",
+            "content": [
+                "This is the first line of the content.",
+                "This is a content block.\nIt can contain multiple paragraphs and line breaks.\n\nSee?",
+                {
+                    "type": "link",
+                    "target": "screen2",
+                    "text": "> NEXT"
+                }
+            ]
+        },
+        {
+            "id": "screen2",
+            "type": "screen",
+            "content": [
+                "\n\n\nThis is the second screen. It starts with numerous line breaks.",
+                {
+                    "type": "link",
+                    "target": "screen1",
+                    "text": "> BACK"
+                }
+            ]
+        }
+    ]
+}
