@@ -1,72 +1,87 @@
-import React, { SFC, useEffect, useRef, RefObject } from "react";
+import React, { SFC, useEffect, useRef, RefObject, useState, useCallback } from "react";
 
 export interface PromptProps {
     prompt?: string;
-    className?: string;
     commands?: any[];
+    className?: string;
+    disabled?: boolean;
+
     onCommand?: (command: string, action: string) => void;
-    onRendered?: () => void;
     onEscape?: () => void;
+    onRendered?: () => void;
 }
 
 export const PROMPT_DEFAULT = "$> ";
 
 const Prompt: SFC<PromptProps> = (props) => {
-    const { prompt, className, commands, onCommand, onRendered, onEscape } = props;
-    const css = ["__prompt__", className ? className : null].join(" ").trim();
+    const { disabled, prompt, className, commands, onCommand, onRendered, onEscape } = props;
     const ref: RefObject<HTMLSpanElement> = useRef();
+    const css = [
+        "__prompt__",
+        disabled ? "disabled" : null,
+        className ? className : null,
+    ].join(" ").trim();
+
+    const [value, setValue] = useState("");
 
     // events
     const handleFocus = () => ref.current.focus();
 
-    const handleKeypress = (e: React.KeyboardEvent<HTMLSpanElement>) => {
-        if (e.key.toLowerCase() === "enter") {
-            e.preventDefault();
+    const handleCommand = () => {
+        if (!onCommand) {
+            return;
+        }
 
-            if (!onCommand) {
-                return;
-            }
+        const command = commands.find(element => element.command === value);
+        setValue("");
 
-            const value = ref.current.innerText.toLowerCase();
-            const command = commands.find(element => element.command === value);
-            if (command) {
-                onCommand(value, command.action);
-            }
-
-            // clear the prompt regardless
-            ref.current.innerHTML = "";
+        if (command) {
+            onCommand(value, command.action);
         }
     };
 
-    const handleEscape = (e: React.KeyboardEvent) => {
-        if (e.key.toLowerCase() === "escape") {
-            onEscape && onEscape();
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (disabled) {
+            setValue("");
+            return;
+        }
+
+        e.preventDefault();
+
+        const key = e.key.toLowerCase();
+        switch (key) {
+            case "backspace":
+                value.length && setValue(value.slice(0, -1));
+                break;
+
+            case "enter":
+                handleCommand();
+                break;
+
+            default:
+                // support alphanumeric, space, and limited puntuation only
+                const re = /[a-z0-9,.<>/?[\]{}'";:*&^%$#@!~]/
+                if (key.length === 1 && key.match(re)) {
+                    setValue(value + key);
+                }
+                break;
         }
     };
 
+    // render effects
     useEffect(() => {
-        handleFocus();
+        // mount
         onRendered && onRendered();
-    });
+        document.addEventListener("keydown", handleKeyDown);
 
-    const style = {
-        // caretColor: "transparent",
-        border: 0,
-        outline: 0,
-    };
+        // unmount
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    });
 
     return (
         <div className={css} onClick={handleFocus}>
             {prompt && <span className={"prompt"}>{prompt}</span>}
-            <span
-                contentEditable={true}
-                className={"input"}
-                tabIndex={-1}
-                style={style}
-                ref={ref}
-                onKeyPress={handleKeypress}
-                onKeyUp={handleEscape}
-            ></span>
+            <span className={"input"} ref={ref}>{value}</span>
         </div>
     );
 };

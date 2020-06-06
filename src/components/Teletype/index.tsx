@@ -5,7 +5,7 @@ interface TeletypeProps {
     className?: string; // css class
     autostart?: boolean; // start animating immediately? default = true
     autocomplete?: boolean; // skip animating and instead fully render? default = false
-    speed?: number; // optional animation speed in ms; default = 10
+    speed?: number; // optional animation speed in ms; default = 5
 
     onComplete: () => void; // event called on completion
     onNewLine?: () => void; // event called when the cursor is moved to a new line
@@ -20,7 +20,7 @@ interface TeletypeState {
 }
 
 class Teletype extends Component<TeletypeProps, TeletypeState> {
-    private _cursorInterval = 10;
+    private _cursorInterval = 5;
     private _animateTimerId: number = null;
     private _cursorRef: React.RefObject<HTMLElement> = null;
     private _cursorY: number = null;
@@ -102,8 +102,6 @@ class Teletype extends Component<TeletypeProps, TeletypeState> {
     }
 
     private _animate(): void {
-        console.log("_animate");
-
         this._clearAnimateTimer();
 
         if (this.state.paused) {

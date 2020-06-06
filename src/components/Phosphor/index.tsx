@@ -12,6 +12,8 @@ import Link from "../Link";
 import Text from "../Text";
 import Image from "../Image";
 import Prompt, { PROMPT_DEFAULT } from "../Prompt";
+import Modal from "../Modal";
+
 // import Screen from "../Screen";
 
 // import sample data for development purposes
@@ -19,11 +21,26 @@ import json from "../../data/sample.json";
 
 interface AppState {
     screens: Screen[];
+    dialogs: any[];
     activeScreenId: string;
     activeElementId: string; // which element, if any, is active
     activeDialogId: string; // which element, if any, is active
     loadingQueue: any[];
     status: AppStatus;
+}
+
+enum DialogType {
+    Unknown = 0,
+    Alert, // simple message box
+    Confirm, // yes/no box; currently unsupported
+    Dialog, // has arbitrary content; currently unsupported
+}
+
+interface Dialog {
+    id: string;
+    type: DialogType;
+
+    [key: string]: any; // arbitrary members
 }
 
 enum ScreenType {
@@ -73,6 +90,7 @@ class Phosphor extends Component<any, AppState> {
 
         this.state = {
             screens: [],
+            dialogs: [],
             activeScreenId: null,
             activeElementId: null,
             activeDialogId: null,
@@ -87,27 +105,25 @@ class Phosphor extends Component<any, AppState> {
 
     public render(): ReactElement {
         const {
-            screens
+            activeScreenId,
+            activeDialogId,
         } = this.state;
 
         return (
             <div className="phosphor">
                 <section>
-                    {screens && this._renderScreen()}
+                    {activeScreenId && this._renderScreen()}
                 </section>
+
+                {activeDialogId && this._renderDialog()}
             </div>
         );
     }
 
     public componentDidMount(): void {
-        console.log("component did mount");
-
         // parse the data & prep the screens
         this._parseScreens();
-    }
-
-    public componentDidUpdate(prevProps: any, prevState: AppState): void {
-        console.log("this.componentDidUpdate");
+        this._parseDialogs();
     }
 
     private _parseScreens(): void {
@@ -126,6 +142,13 @@ class Phosphor extends Component<any, AppState> {
         }, () => this._setActiveScreen(activeScreen));
     }
 
+    private _parseDialogs(): void {
+
+        const dialogs = json.dialogs.forEach((element) => {
+            console.log(element);
+        });
+    }
+
     private _setActiveScreen(index: number): void {
         const { screens, } = this.state;
         const activeScreen = screens[index].id
@@ -136,7 +159,6 @@ class Phosphor extends Component<any, AppState> {
 
     // we're off to the races!
     private _activateScreen(): void {
-        console.log("this._activateScreen");
         const screen = this._getScreen(this.state.activeScreenId);
 
         screen.content[0].state = ScreenDataState.Active;
@@ -321,8 +343,6 @@ class Phosphor extends Component<any, AppState> {
 
     // based on the current active ScreenData, render the corresponding active element
     private _renderActiveElement(element: any, key: number): ReactElement {
-        const activeData = this._getActiveScreenData();
-        console.log(element);
         // if the element is text-based, like text or Link, render instead a
         // teletype component
         if (element.type === ScreenDataType.Text || element.type === ScreenDataType.Link) {
@@ -338,7 +358,6 @@ class Phosphor extends Component<any, AppState> {
 
         if (element.type === ScreenDataType.Prompt) {
             const handleRendered = () => this._activateNextScreenData();
-            console.log("Prompt to render:", element.prompt);
             return (
                 <Teletype
                     key={key}
@@ -404,6 +423,7 @@ class Phosphor extends Component<any, AppState> {
                 <Prompt
                     key={key}
                     className={className}
+                    disabled={!!this.state.activeDialogId}
                     prompt={element.prompt}
                     commands={element.commands}
                     onCommand={this._handleCommand}
@@ -416,7 +436,6 @@ class Phosphor extends Component<any, AppState> {
 
     private _changeScreen(targetScreen: string): void {
         // todo: handle missing screen
-        console.log("_changeScreen");
         // unload the current screen first
         this._unloadScreen();
 
@@ -438,7 +457,6 @@ class Phosphor extends Component<any, AppState> {
 
         // only change the state if we need to
         if (content && (content.state !== state)) {
-            console.log("changing state", ScreenDataState[state]);
             content.state = state;
         }
 ;   }
@@ -459,7 +477,6 @@ class Phosphor extends Component<any, AppState> {
 
     // find the currently active element and, if possible, activate it
     private _activateNextScreenData(): void {
-        console.log("_activateNextScreenData");
         const screen = this._getScreen(this.state.activeScreenId);
         const activeIndex = screen.content.findIndex(element => element.state === ScreenDataState.Active);
 
@@ -540,11 +557,34 @@ class Phosphor extends Component<any, AppState> {
 
             case "dialog":
                 args.target && this._toggleDialog(args.target);
+                break;
+
+            case "console":
+                console.log(command, args);
+                this._toggleDialog("foo");
+                break;
 
             default:
                 // throw an error message
-                return;
+                break;
         }
+    }
+
+    private _renderDialog(): ReactElement {
+        const { activeDialogId, } = this.state;
+
+        if (!activeDialogId) {
+            return null;
+        }
+
+        const handleClose = () => this._toggleDialog();
+
+        return (
+            <Modal
+                text={["this is a dialog", "this is a second line in a dialog"]}
+                onClose={handleClose}
+            />
+        );
     }
 }
 

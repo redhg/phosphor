@@ -8,11 +8,8 @@
             "id": "screen1",
             "type": "screen",
             "content": [
+                "",
                 "This is the first line of the content.",
-                "This is a content block.\nIt can contain multiple paragraphs and line breaks.\n\n\nSee?",
-                "Lorem ipsum dolor sit amet, mel fabulas blandit an, nullam integre feugiat eum an. In inimicus volutpat eum, quo ea elaboraret neglegentur. In ius postea adipisci expetendis, iudico latine epicuri pro id. Ei oblique feugiat definiebas eam, ad sea option fierent, his cu tritani invidunt. Te est dicunt praesent, ei cum illud iudicabit.",
-                "\n",
-                "\n",
                 {
                     "type": "text",
                     "text": "this is a text object",
@@ -33,6 +30,13 @@
                                 "type": "link",
                                 "target": "screen2"
                             }
+                        },
+                        {
+                            "command": "console",
+                            "action": {
+                                "type": "console",
+                                "args": "whatever"
+                            }
                         }
                     ]
                 }
@@ -43,6 +47,10 @@
             "type": "screen",
             "content": [
                 "\n\n\nThis is the second screen. It starts with numerous line breaks.",
+                "This is a content block.\nIt can contain multiple paragraphs and line breaks.\n\n\nSee?",
+                "Lorem ipsum dolor sit amet, mel fabulas blandit an, nullam integre feugiat eum an. In inimicus volutpat eum, quo ea elaboraret neglegentur. In ius postea adipisci expetendis, iudico latine epicuri pro id. Ei oblique feugiat definiebas eam, ad sea option fierent, his cu tritani invidunt. Te est dicunt praesent, ei cum illud iudicabit.",
+                "\n",
+                "\n",
                 {
                     "type": "link",
                     "target": "screen1",
@@ -53,10 +61,19 @@
     ],
     "dialogs": [
         {
-            "id": "__error__",
-            "type": "dialog",
+            "id": "dialog1",
+            "type": "alert",
             "content": [
-
+                "this is the first line in the dialog.",
+                "And this is the second line.",
+                "Press <enter> to close."
+            ]
+        },
+        {
+            "id": "locked",
+            "type": "alert",
+            "content": [
+                "Error! Keycard required."
             ]
         }
     ]
