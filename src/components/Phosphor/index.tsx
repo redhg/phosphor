@@ -143,10 +143,50 @@ class Phosphor extends Component<any, AppState> {
     }
 
     private _parseDialogs(): void {
-
-        const dialogs = json.dialogs.forEach((element) => {
-            console.log(element);
+        const dialogs = json.dialogs.map((element) => {
+            return this._buildDialog(element);
         });
+
+        if (!dialogs.length) {
+            return;
+        }
+
+        this.setState({
+            dialogs,
+        });
+    }
+
+    private _buildDialog(src: any): Dialog {
+        const id = src.id || null;
+        const type = this._getDialogType(src.type);
+
+        // TODO: support other dialog types
+        let content: any [] = null;
+        if (type === DialogType.Alert) {
+            content = src.content;
+        }
+
+        return {
+            id,
+            type,
+            content,
+        };
+    }
+
+    private _getDialogType(type: string): DialogType {
+        switch (type.toLowerCase()) {
+            case "alert":
+                return DialogType.Alert;
+
+            case "confirm":
+                return DialogType.Confirm;
+
+            case "dialog":
+                return DialogType.Dialog;
+
+            default:
+                return DialogType.Unknown;
+        }
     }
 
     private _setActiveScreen(index: number): void {
@@ -561,7 +601,6 @@ class Phosphor extends Component<any, AppState> {
 
             case "console":
                 console.log(command, args);
-                this._toggleDialog("foo");
                 break;
 
             default:
@@ -571,9 +610,14 @@ class Phosphor extends Component<any, AppState> {
     }
 
     private _renderDialog(): ReactElement {
-        const { activeDialogId, } = this.state;
+        const { activeDialogId, dialogs, } = this.state;
 
         if (!activeDialogId) {
+            return null;
+        }
+
+        const dialog = dialogs.find(element => element.id === activeDialogId);
+        if (!dialog) {
             return null;
         }
 
@@ -581,7 +625,7 @@ class Phosphor extends Component<any, AppState> {
 
         return (
             <Modal
-                text={["this is a dialog", "this is a second line in a dialog"]}
+                text={dialog.content}
                 onClose={handleClose}
             />
         );

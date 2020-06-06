@@ -37,6 +37,20 @@
                                 "type": "console",
                                 "args": "whatever"
                             }
+                        },
+                        {
+                            "command": "dialog1",
+                            "action": {
+                                "type": "dialog",
+                                "target": "dialog1"
+                            }
+                        },
+                        {
+                            "command": "dialog2",
+                            "action": {
+                                "type": "dialog",
+                                "target": "locked"
+                            }
                         }
                     ]
                 }
