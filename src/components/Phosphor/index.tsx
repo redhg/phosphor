@@ -7,14 +7,16 @@ import { nanoid } from "nanoid";
 import Link from "../Link";
 import Text from "../Text";
 import Image from "../Image";
+import Teletype from "../Teletype";
+// import Screen from "../Screen";
 
 // import sample data for development purposes
 import json from "../../data/sample.json";
-import Teletype from "../Teletype";
 
 interface AppState {
     screens: Screen[];
     activeScreen: string;
+    activeElement: string; // which element, if any, is active
     loadingQueue: any[];
     status: AppStatus;
 }
@@ -66,6 +68,7 @@ class Phosphor extends Component<any, AppState> {
         this.state = {
             screens: [],
             activeScreen: null,
+            activeElement: null,
             loadingQueue: [],
             status: AppStatus.Unset,
         };
@@ -127,12 +130,14 @@ class Phosphor extends Component<any, AppState> {
     private _activateScreen(): void {
         console.log("this._activateScreen");
         const screen = this._getScreen(this.state.activeScreen);
+
         screen.content[0].state = ScreenDataState.Active;
 
         // update the app status
         const status = AppStatus.Active;
         this.setState({
             status,
+            activeElement: screen.content[0].id,
         });
     }
 
@@ -295,7 +300,7 @@ class Phosphor extends Component<any, AppState> {
                 <Teletype
                     key={key}
                     text={element.text}
-                    onRendered={handleRendered}
+                    onComplete={handleRendered}
                 />
             );
         }
@@ -353,11 +358,19 @@ class Phosphor extends Component<any, AppState> {
     }
 
     private _changeScreen(activeScreen: string): void {
+        console.log("_changeScreen");
         // unload the current screen first
         this._unloadScreen();
 
+        // active the first element in the screen's content collection
+        const screen = this._getScreen(activeScreen);
+        const activeElement = screen.content[0];
+        activeElement.state = ScreenDataState.Active;
+
         this.setState({
             activeScreen,
+            activeElement: activeElement.id,
+            status: AppStatus.Active,
         });
     }
 
@@ -386,7 +399,7 @@ class Phosphor extends Component<any, AppState> {
         return screen.content.find(element => element.id === id);
     }
 
-    // find the currently active element and, fi possible,
+    // find the currently active element and, if possible, activate it
     private _activateNextScreenData(): void {
         console.log("_activateNextScreenData");
         const screen = this._getScreen(this.state.activeScreen);
@@ -403,11 +416,21 @@ class Phosphor extends Component<any, AppState> {
         // we're at the end of the array so there is no next
         if (activeIndex === screen.content.length - 1) {
             // todo: indicate everything's done
+            this.setState({
+                activeElement: null,
+                status: AppStatus.Done,
+            });
+
             return;
         }
 
         // otherwise, activate the next one
         screen.content[activeIndex + 1].state = ScreenDataState.Active;
+
+        // todo: indicate everything's done
+        this.setState({
+            activeElement: screen.content[activeIndex + 1].id,
+        });
     }
 
     private _getActiveScreenData(): ScreenData {

@@ -1,30 +1,174 @@
 import React, { Component, ReactElement } from "react";
 
 interface TeletypeProps {
-    text: string;
-    onRendered?: () => void;
+    text: string; // text to animate
+    className?: string; // css class
+    autostart?: boolean; // start animating immediately? default = true
+    autocomplete?: boolean; // skip animating and instead fully render? default = false
+    speed?: number; // optional animation speed in ms; default = 10
+
+    onComplete: () => void; // event called on completion
+    onNewLine?: () => void; // event called when the cursor is moved to a new line
 }
 
 interface TeletypeState {
-
+    index: number;
+    char: number;
+    active: boolean;
+    done: boolean;
+    paused: boolean;
 }
 
 class Teletype extends Component<TeletypeProps, TeletypeState> {
+    private _cursorInterval = 10;
+    private _animateTimerId: number = null;
+    private _cursorRef: React.RefObject<HTMLElement> = null;
+    private _cursorY: number = null;
+
     constructor(props: TeletypeProps) {
         super(props);
 
-        this.state = {
+        this._cursorRef = React.createRef<HTMLElement>();
+        this._cursorY = 0;
 
+        const done = !!props.autocomplete;
+        const paused = props.autostart === false;
+
+        this._cursorInterval = props.speed || this._cursorInterval;
+
+        this.state = {
+            index: 0,
+            char: 0,
+            active: false,
+            done,
+            paused,
         };
+
+        this._animate = this._animate.bind(this);
+        this._updateState = this._updateState.bind(this);
     }
 
     public render(): ReactElement {
-        return <h2>{this.props.text}</h2>;
+        const { text, className } = this.props;
+        const { char, done, active, } = this.state;
+
+        const visible = text.substr(0, char); // already rendered
+        const cursor = text.substr(char, 1) || " "; // " " ensures the curosr is briefly visible for line breaks
+        const hidden = text.substr(char + 1); // to be rendered
+
+        if (!active || done) {
+            return null;
+        }
+
+        return (
+            <div className={`active ${className ? className : ''}`}>
+                <span className="visible">{visible}</span>
+                <span className="cursor" ref={this._cursorRef}>{cursor}</span>
+                <span className="hidden">{hidden}</span>
+            </div>
+        );
     }
 
     public componentDidMount(): void {
-        const { onRendered } = this.props;
-        onRendered && onRendered();
+        const { paused, } = this.state;
+
+        // ready to go
+        if (!paused) {
+            this.setState({
+                active: true,
+            }, () => this._animate());
+        }
+    }
+
+    public componentDidUpdate(prevProps: TeletypeProps, prevState: TeletypeState): void {
+        if (!prevState.done && this.state.done) {
+            this._onComplete();
+        }
+
+        if (this.state.done) {
+            return;
+        }
+
+        this._animate();
+    }
+
+    public componentWillUnmount(): void {
+        if (this._animateTimerId !== null) {
+            clearTimeout(this._animateTimerId);
+            this._animateTimerId = null;
+        }
+    }
+
+    private _animate(): void {
+        console.log("_animate");
+
+        this._clearAnimateTimer();
+
+        if (this.state.paused) {
+            return;
+        }
+
+        // track the current active line
+        // this._getCursorPosition();
+
+        // setTimeout is preferred over requestAnimationFrame so the interval
+        // can be specified -- we can control how janky it looked; requestAnimationFrame
+        // results in animation that's much to smooth for our purposes.
+        this._animateTimerId = window.setTimeout(this._updateState, this._cursorInterval);
+    }
+
+    private _clearAnimateTimer(): void {
+        if (this._animateTimerId !== null) {
+            window.clearTimeout(this._animateTimerId);
+            this._animateTimerId = null;
+        }
+    }
+
+    private _updateState(): void {
+        const { text, } = this.props;
+        const {
+            char,
+            active,
+            done,
+            paused,
+        } = this.state;
+
+        if (done) {
+            return;
+        }
+
+        // let nextIndex = index;
+        let nextChar = char;
+        let nextActive = active;
+        let nextDone = done;
+        let nextPaused = paused;
+
+        // if we're not active, we are now!
+        if (!nextActive) {
+            nextActive = true;
+        }
+
+        // if char is less that the current string, increment it
+        if (char < text.length) {
+            nextChar = char + 1;
+        } else {
+            nextActive = false;
+            nextDone = true;
+        }
+
+        // update state
+        this.setState({
+            // index: nextIndex,
+            char: nextChar,
+            active: nextActive,
+            done: nextDone,
+            paused: nextPaused,
+        });
+    }
+
+    private _onComplete(): void {
+        const { onComplete, } = this.props;
+        onComplete && onComplete();
     }
 }
 
