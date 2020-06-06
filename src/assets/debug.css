@@ -1,0 +1,26 @@
+div.phosphor > section {
+    font-family: monospace;
+    font-size: 14pt;
+}
+
+.__teletype__ {
+    background-color: rgba(200,200, 200, 0.5);
+}
+
+.__teletype__ span.cursor {
+    background-color: #000;
+}
+
+.__teletype__ span.hidden {
+    visibility: hidden;
+}
+
+.__prompt__ span.input {
+    border: 0;
+    outline: 0;
+    caret-color: transparent;
+}
+
+.__prompt__ span.input::after {
+    content: "[]";
+}

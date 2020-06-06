@@ -10,12 +10,31 @@
             "content": [
                 "This is the first line of the content.",
                 "This is a content block.\nIt can contain multiple paragraphs and line breaks.\n\n\nSee?",
+                "Lorem ipsum dolor sit amet, mel fabulas blandit an, nullam integre feugiat eum an. In inimicus volutpat eum, quo ea elaboraret neglegentur. In ius postea adipisci expetendis, iudico latine epicuri pro id. Ei oblique feugiat definiebas eam, ad sea option fierent, his cu tritani invidunt. Te est dicunt praesent, ei cum illud iudicabit.",
                 "\n",
                 "\n",
+                {
+                    "type": "text",
+                    "text": "this is a text object",
+                    "className": "blahblahblah"
+                },
                 {
                     "type": "link",
                     "target": "screen2",
                     "text": "> NEXT"
+                },
+                {
+                    "type": "prompt",
+                    "prompt": "Enter command: ",
+                    "commands": [
+                        {
+                            "command": "next",
+                            "action": {
+                                "type": "link",
+                                "target": "screen2"
+                            }
+                        }
+                    ]
                 }
             ]
         },
@@ -29,6 +48,15 @@
                     "target": "screen1",
                     "text": "> BACK"
                 }
+            ]
+        }
+    ],
+    "dialogs": [
+        {
+            "id": "__error__",
+            "type": "dialog",
+            "content": [
+
             ]
         }
     ]

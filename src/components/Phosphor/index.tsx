@@ -1,13 +1,17 @@
 import React, { Component, ReactElement } from "react";
 
+// css
+import "../../assets/debug.css";
+
 // modules
 import { nanoid } from "nanoid";
 
 // components
+import Teletype from "../Teletype";
 import Link from "../Link";
 import Text from "../Text";
 import Image from "../Image";
-import Teletype from "../Teletype";
+import Prompt, { PROMPT_DEFAULT } from "../Prompt";
 // import Screen from "../Screen";
 
 // import sample data for development purposes
@@ -15,8 +19,9 @@ import json from "../../data/sample.json";
 
 interface AppState {
     screens: Screen[];
-    activeScreen: string;
-    activeElement: string; // which element, if any, is active
+    activeScreenId: string;
+    activeElementId: string; // which element, if any, is active
+    activeDialogId: string; // which element, if any, is active
     loadingQueue: any[];
     status: AppStatus;
 }
@@ -31,6 +36,7 @@ enum ScreenDataType {
     Text,
     Link,
     Image,
+    Prompt,
 }
 
 enum ScreenDataState {
@@ -67,14 +73,16 @@ class Phosphor extends Component<any, AppState> {
 
         this.state = {
             screens: [],
-            activeScreen: null,
-            activeElement: null,
+            activeScreenId: null,
+            activeElementId: null,
+            activeDialogId: null,
             loadingQueue: [],
             status: AppStatus.Unset,
         };
 
         this._changeScreen = this._changeScreen.bind(this);
         this._setElementState = this._setElementState.bind(this);
+        this._handleCommand = this._handleCommand.bind(this);
     }
 
     public render(): ReactElement {
@@ -84,7 +92,7 @@ class Phosphor extends Component<any, AppState> {
 
         return (
             <div className="phosphor">
-                <section style={{ whiteSpace: "pre" }}>
+                <section>
                     {screens && this._renderScreen()}
                 </section>
             </div>
@@ -122,14 +130,14 @@ class Phosphor extends Component<any, AppState> {
         const { screens, } = this.state;
         const activeScreen = screens[index].id
         this.setState({
-            activeScreen,
+            activeScreenId: activeScreen,
         }, () => this._activateScreen());
     }
 
     // we're off to the races!
     private _activateScreen(): void {
         console.log("this._activateScreen");
-        const screen = this._getScreen(this.state.activeScreen);
+        const screen = this._getScreen(this.state.activeScreenId);
 
         screen.content[0].state = ScreenDataState.Active;
 
@@ -137,7 +145,7 @@ class Phosphor extends Component<any, AppState> {
         const status = AppStatus.Active;
         this.setState({
             status,
-            activeElement: screen.content[0].id,
+            activeElementId: screen.content[0].id,
         });
     }
 
@@ -171,7 +179,7 @@ class Phosphor extends Component<any, AppState> {
 
     private _renderScreen(): ReactElement[] {
         // get the active screen
-        const screen = this._getScreen(this.state.activeScreen);
+        const screen = this._getScreen(this.state.activeScreenId);
         if (!screen) {
             return;
         }
@@ -188,7 +196,7 @@ class Phosphor extends Component<any, AppState> {
             // if it's active, render it animated
             if (element.state === ScreenDataState.Active) {
                 return (
-                    <div className="rendered" key={index}>
+                    <div className="active" key={index}>
                         {this._renderActiveElement(element, index)}
                     </div>
                 );
@@ -252,11 +260,22 @@ class Phosphor extends Component<any, AppState> {
         }
 
         switch (element.type.toLowerCase()) {
+            case "text":
+                return {
+                    id,
+                    type: ScreenDataType.Text,
+                    text: element.text,
+                    className: element.className,
+                    state,
+                    onLoad,
+                }
+
             case "link":
                 return {
                     id,
                     type: ScreenDataType.Link,
                     target: element.target,
+                    className: element.className,
                     text: element.text,
                     state,
                     onLoad,
@@ -268,6 +287,18 @@ class Phosphor extends Component<any, AppState> {
                     type: ScreenDataType.Image,
                     src: element.src,
                     alt: element.alt,
+                    className: element.className,
+                    state,
+                    onLoad,
+                };
+
+            case "prompt":
+                return {
+                    id,
+                    type: ScreenDataType.Prompt,
+                    prompt: element.prompt || PROMPT_DEFAULT,
+                    className: element.className,
+                    commands: element.commands,
                     state,
                     onLoad,
                 };
@@ -304,6 +335,19 @@ class Phosphor extends Component<any, AppState> {
                 />
             );
         }
+
+        if (element.type === ScreenDataType.Prompt) {
+            const handleRendered = () => this._activateNextScreenData();
+            console.log("Prompt to render:", element.prompt);
+            return (
+                <Teletype
+                    key={key}
+                    text={element.prompt}
+                    onComplete={handleRendered}
+                />
+            );
+        }
+
         return null;
     }
 
@@ -354,28 +398,42 @@ class Phosphor extends Component<any, AppState> {
             );
         }
 
+        // image
+        if (element.type === ScreenDataType.Prompt) {
+            return (
+                <Prompt
+                    key={key}
+                    className={className}
+                    prompt={element.prompt}
+                    commands={element.commands}
+                    onCommand={this._handleCommand}
+                />
+            );
+        }
+
         return null;
     }
 
-    private _changeScreen(activeScreen: string): void {
+    private _changeScreen(targetScreen: string): void {
+        // todo: handle missing screen
         console.log("_changeScreen");
         // unload the current screen first
         this._unloadScreen();
 
         // active the first element in the screen's content collection
-        const screen = this._getScreen(activeScreen);
+        const screen = this._getScreen(targetScreen);
         const activeElement = screen.content[0];
         activeElement.state = ScreenDataState.Active;
 
         this.setState({
-            activeScreen,
-            activeElement: activeElement.id,
+            activeScreenId: targetScreen,
+            activeElementId: activeElement.id,
             status: AppStatus.Active,
         });
     }
 
     private _setElementState(id: string, state: ScreenDataState): void {
-        const screen = this._getScreen(this.state.activeScreen);
+        const screen = this._getScreen(this.state.activeScreenId);
         const content = screen.content.find(element => element.id === id);
 
         // only change the state if we need to
@@ -388,21 +446,21 @@ class Phosphor extends Component<any, AppState> {
     private _unloadScreen(): void {
         // go through the current screen elements, setting
         // their states to ScreenDataState.Ready
-        const screen = this._getScreen(this.state.activeScreen);
+        const screen = this._getScreen(this.state.activeScreenId);
         screen.content.forEach(element => {
             element.state = ScreenDataState.Unloaded;
         });
     }
 
     private _getScreenDataById(id: string): any {
-        const screen = this._getScreen(this.state.activeScreen);
+        const screen = this._getScreen(this.state.activeScreenId);
         return screen.content.find(element => element.id === id);
     }
 
     // find the currently active element and, if possible, activate it
     private _activateNextScreenData(): void {
         console.log("_activateNextScreenData");
-        const screen = this._getScreen(this.state.activeScreen);
+        const screen = this._getScreen(this.state.activeScreenId);
         const activeIndex = screen.content.findIndex(element => element.state === ScreenDataState.Active);
 
         // nothing is active
@@ -417,7 +475,7 @@ class Phosphor extends Component<any, AppState> {
         if (activeIndex === screen.content.length - 1) {
             // todo: indicate everything's done
             this.setState({
-                activeElement: null,
+                activeElementId: null,
                 status: AppStatus.Done,
             });
 
@@ -429,12 +487,12 @@ class Phosphor extends Component<any, AppState> {
 
         // todo: indicate everything's done
         this.setState({
-            activeElement: screen.content[activeIndex + 1].id,
+            activeElementId: screen.content[activeIndex + 1].id,
         });
     }
 
     private _getActiveScreenData(): ScreenData {
-        const screen = this._getScreen(this.state.activeScreen);
+        const screen = this._getScreen(this.state.activeScreenId);
         const activeIndex = screen.content.findIndex(element => element.state === ScreenDataState.Active);
 
         // is something active?
@@ -456,8 +514,37 @@ class Phosphor extends Component<any, AppState> {
     }
 
     private _setActiveScreenDataByIndex(index: number): void {
-        const screen = this._getScreen(this.state.activeScreen);
+        const screen = this._getScreen(this.state.activeScreenId);
         screen.content[index].state = ScreenDataState.Active;
+    }
+
+    private _toggleDialog(targetDialogId?: string): void {
+        // TODO: check if targetDialog is a valid dialog
+        this.setState({
+            activeDialogId: targetDialogId || null,
+        });
+    }
+
+    private _handleCommand(command: string, args?: any) {
+        // handle the various commands
+        if (!args || !args.type) {
+            // display an error message
+            return;
+        }
+
+        switch (args.type) {
+            case "link":
+                // fire the change screen event
+                args.target && this._changeScreen(args.target);
+                break;
+
+            case "dialog":
+                args.target && this._toggleDialog(args.target);
+
+            default:
+                // throw an error message
+                return;
+        }
     }
 }
 

@@ -60,8 +60,10 @@ class Teletype extends Component<TeletypeProps, TeletypeState> {
             return null;
         }
 
+        const css = ["__teletype__", className ? className : null].join(" ").trim();
+
         return (
-            <div className={`active ${className ? className : ''}`}>
+            <div className={css}>
                 <span className="visible">{visible}</span>
                 <span className="cursor" ref={this._cursorRef}>{cursor}</span>
                 <span className="hidden">{hidden}</span>
