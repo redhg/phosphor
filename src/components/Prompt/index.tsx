@@ -1,4 +1,4 @@
-import React, { SFC, useEffect, useRef, RefObject, useState, useCallback } from "react";
+import React, { SFC, useEffect, useRef, RefObject, useState, } from "react";
 
 export interface PromptProps {
     prompt?: string;
@@ -14,7 +14,7 @@ export interface PromptProps {
 export const PROMPT_DEFAULT = "$> ";
 
 const Prompt: SFC<PromptProps> = (props) => {
-    const { disabled, prompt, className, commands, onCommand, onRendered, onEscape } = props;
+    const { disabled, prompt, className, commands, onCommand, onRendered, } = props;
     const ref: RefObject<HTMLSpanElement> = useRef();
     const css = [
         "__prompt__",

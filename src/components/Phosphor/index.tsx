@@ -1,7 +1,7 @@
 import React, { Component, ReactElement } from "react";
 
 // css
-import "../../assets/debug.css";
+import "./style.scss";
 
 // modules
 import { nanoid } from "nanoid";

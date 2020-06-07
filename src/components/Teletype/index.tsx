@@ -1,5 +1,8 @@
 import React, { Component, ReactElement } from "react";
 
+// css
+import "./style.scss";
+
 interface TeletypeProps {
     text: string; // text to animate
     className?: string; // css class

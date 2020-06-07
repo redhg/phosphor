@@ -1,0 +1,18 @@
+@import "../../assets/sass/fonts";
+@import "../../assets/sass/colors";
+
+html, body {
+    font-family: $font-family;
+    font-size: $fontsize;
+    line-height: $lineheight;
+    color: $foreground;
+    background: $background;
+
+    user-select: none;
+    text-shadow: $foreground-glow;
+}
+
+body {
+    margin: 0;
+    padding: $lineheight;
+}
