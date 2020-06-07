@@ -5,6 +5,23 @@
     },
     "screens": [
         {
+            "id": "screen0",
+            "type": "screen",
+            "content": [
+                "Grumpy Cat:",
+                {
+                    "type": "bitmap",
+                    "src": "https://i.imgur.com/rDjphNY.jpg",
+                    "alt": "Grumpy Cat test image"
+                },
+                {
+                    "type": "link",
+                    "target": "screen1",
+                    "text": "> NEXT"
+                }
+            ]
+        },
+        {
             "id": "screen1",
             "type": "screen",
             "content": [

@@ -10,7 +10,7 @@ import { nanoid } from "nanoid";
 import Teletype from "../Teletype";
 import Link from "../Link";
 import Text from "../Text";
-import Image from "../Image";
+import Bitmap from "../Bitmap";
 import Prompt, { PROMPT_DEFAULT } from "../Prompt";
 import Modal from "../Modal";
 import Scanlines from "../Scanlines";
@@ -54,7 +54,7 @@ enum ScreenDataType {
     Unknown = 0,
     Text,
     Link,
-    Image,
+    Bitmap,
     Prompt,
 }
 
@@ -383,9 +383,10 @@ class Phosphor extends Component<any, AppState> {
                 };
 
             case "image":
+            case "bitmap":
                 return {
                     id,
-                    type: ScreenDataType.Image,
+                    type: ScreenDataType.Bitmap,
                     src: element.src,
                     alt: element.alt,
                     className: element.className,
@@ -440,6 +441,21 @@ class Phosphor extends Component<any, AppState> {
             );
         }
 
+        if (type === ScreenDataType.Bitmap) {
+            const handleRendered = () => this._activateNextScreenData();
+            return (
+                <Bitmap
+                    key={key}
+                    className={element.className}
+                    src={element.src}
+                    alt={element.alt}
+                    onComplete={handleRendered}
+                />
+            );
+        }
+
+        // otherwise, just activate the next element
+        this._activateNextScreenData();
         return null;
     }
 
@@ -478,19 +494,25 @@ class Phosphor extends Component<any, AppState> {
             );
         }
 
-        // image
-        if (element.type === ScreenDataType.Image) {
+        // bitmap
+        if (element.type === ScreenDataType.Bitmap) {
+            const onComplete = () => {
+                // this._activateNextScreenData();
+                this._setElementState(element.id, ScreenDataState.Done);
+            };
             return (
-                <Image
+                <Bitmap
                     key={key}
                     className={className}
                     src={element.src}
                     alt={element.alt}
+                    onComplete={onComplete}
+                    autocomplete={true}
                 />
             );
         }
 
-        // image
+        // prompt
         if (element.type === ScreenDataType.Prompt) {
             return (
                 <Prompt
