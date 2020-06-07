@@ -89,8 +89,12 @@ enum AppStatus {
 }
 
 class Phosphor extends Component<any, AppState> {
+    private _ref: React.RefObject<HTMLElement>;
+
     constructor(props: any) {
         super(props);
+
+        this._ref = React.createRef<HTMLElement>();
 
         this.state = {
             screens: [],
@@ -106,7 +110,8 @@ class Phosphor extends Component<any, AppState> {
 
         this._changeScreen = this._changeScreen.bind(this);
         this._setElementState = this._setElementState.bind(this);
-        this._handleCommand = this._handleCommand.bind(this);
+        this._handlePromptCommand = this._handlePromptCommand.bind(this);
+        this._handleTeletypeNewLine = this._handleTeletypeNewLine.bind(this);
     }
 
     public render(): ReactElement {
@@ -118,7 +123,7 @@ class Phosphor extends Component<any, AppState> {
 
         return (
             <div className="phosphor">
-                <section>
+                <section ref={this._ref}>
                     {activeScreenId && this._renderScreen()}
                 </section>
 
@@ -425,6 +430,7 @@ class Phosphor extends Component<any, AppState> {
                     key={key}
                     text={element.text}
                     onComplete={handleRendered}
+                    onNewLine={this._handleTeletypeNewLine}
                 />
             );
         }
@@ -499,7 +505,7 @@ class Phosphor extends Component<any, AppState> {
                     disabled={!!this.state.activeDialogId}
                     prompt={element.prompt}
                     commands={element.commands}
-                    onCommand={this._handleCommand}
+                    onCommand={this._handlePromptCommand}
                 />
             );
         }
@@ -615,7 +621,7 @@ class Phosphor extends Component<any, AppState> {
         });
     }
 
-    private _handleCommand(command: string, args?: any) {
+    private _handlePromptCommand(command: string, args?: any) {
         // handle the various commands
         if (!args || !args.type) {
             // display an error message
@@ -662,6 +668,16 @@ class Phosphor extends Component<any, AppState> {
                 onClose={handleClose}
             />
         );
+    }
+
+    private _handleTeletypeNewLine(): void {
+        // TODO: handle lineheight/scrolling
+        const ref = this._ref;
+        console.log("scrolling!", ref);
+        // const lineheight = this.props.measurements.lineHeight;
+        // if (ref) {
+        //     ref.current.scrollTop += lineheight;
+        // }
     }
 }
 
