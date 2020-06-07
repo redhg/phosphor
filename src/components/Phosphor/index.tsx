@@ -422,27 +422,20 @@ class Phosphor extends Component<any, AppState> {
 
     // based on the current active ScreenData, render the corresponding active element
     private _renderActiveElement(element: any, key: number): ReactElement {
+        const type = element.type;
+
         // if the element is text-based, like text or Link, render instead a
         // teletype component
-        if (element.type === ScreenDataType.Text || element.type === ScreenDataType.Link) {
+        if (type === ScreenDataType.Text || type === ScreenDataType.Link || type === ScreenDataType.Prompt) {
+            const text = type === ScreenDataType.Prompt ? element.prompt : element.text;
             const handleRendered = () => this._activateNextScreenData();
             return (
                 <Teletype
                     key={key}
-                    text={element.text}
+                    text={text}
                     onComplete={handleRendered}
                     onNewLine={this._handleTeletypeNewLine}
-                />
-            );
-        }
-
-        if (element.type === ScreenDataType.Prompt) {
-            const handleRendered = () => this._activateNextScreenData();
-            return (
-                <Teletype
-                    key={key}
-                    text={element.prompt}
-                    onComplete={handleRendered}
+                    autocomplete={false}
                 />
             );
         }

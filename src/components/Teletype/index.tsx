@@ -75,7 +75,13 @@ class Teletype extends Component<TeletypeProps, TeletypeState> {
     }
 
     public componentDidMount(): void {
-        const { paused, } = this.state;
+        const { paused, done } = this.state;
+
+        // if autocomplete is on, we can skip to the end
+        if (done) {
+            this._onComplete();
+            return;
+        }
 
         // ready to go
         if (!paused) {
@@ -89,6 +95,7 @@ class Teletype extends Component<TeletypeProps, TeletypeState> {
         if (!prevState.done && this.state.done) {
             this._onComplete();
         }
+
 
         if (this.state.done) {
             return;
