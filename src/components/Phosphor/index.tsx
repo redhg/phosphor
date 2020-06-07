@@ -14,7 +14,6 @@ import Image from "../Image";
 import Prompt, { PROMPT_DEFAULT } from "../Prompt";
 import Modal from "../Modal";
 import Scanlines from "../Scanlines";
-import Static from "../Static";
 
 // import sample data for development purposes
 import json from "../../data/sample.json";
@@ -28,8 +27,7 @@ interface AppState {
     loadingQueue: any[];
     status: AppStatus;
 
-    // dev
-    _static: boolean;
+    renderScanlines: boolean; // should scanlines be enabled?
 }
 
 enum DialogType {
@@ -89,12 +87,14 @@ enum AppStatus {
 }
 
 class Phosphor extends Component<any, AppState> {
-    private _ref: React.RefObject<HTMLElement>;
+    private _containerRef: React.RefObject<HTMLElement>;
+    private _lineheight: number = null;
+    private _colwidth: number = null;
 
     constructor(props: any) {
         super(props);
 
-        this._ref = React.createRef<HTMLElement>();
+        this._containerRef = React.createRef<HTMLElement>();
 
         this.state = {
             screens: [],
@@ -104,8 +104,7 @@ class Phosphor extends Component<any, AppState> {
             activeDialogId: null,
             loadingQueue: [],
             status: AppStatus.Unset,
-
-            _static: true,
+            renderScanlines: true, // TODO: support option to disable this effect
         };
 
         this._changeScreen = this._changeScreen.bind(this);
@@ -118,30 +117,32 @@ class Phosphor extends Component<any, AppState> {
         const {
             activeScreenId,
             activeDialogId,
-            _static,
+            renderScanlines,
         } = this.state;
 
         return (
             <div className="phosphor">
-                <section ref={this._ref}>
+                <section className={"__main__"} ref={this._containerRef}>
                     {activeScreenId && this._renderScreen()}
                 </section>
 
                 {activeDialogId && this._renderDialog()}
 
                 {/* scanlines should be the last child */}
-                <Scanlines />
+                {renderScanlines && <Scanlines />}
             </div>
 
         );
     }
 
+    // public react events
     public componentDidMount(): void {
         // parse the data & prep the screens
         this._parseScreens();
         this._parseDialogs();
     }
 
+    // private methods
     private _parseScreens(): void {
         const screens = json.screens.map((element) => {
             return this._buildScreen(element);
@@ -672,7 +673,7 @@ class Phosphor extends Component<any, AppState> {
 
     private _handleTeletypeNewLine(): void {
         // TODO: handle lineheight/scrolling
-        const ref = this._ref;
+        const ref = this._containerRef;
         console.log("scrolling!", ref);
         // const lineheight = this.props.measurements.lineHeight;
         // if (ref) {
