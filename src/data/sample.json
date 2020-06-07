@@ -70,6 +70,10 @@
                     "text": "> BACK"
                 }
             ]
+        },
+        {
+            "id": "static",
+            "type": "static"
         }
     ],
     "dialogs": [

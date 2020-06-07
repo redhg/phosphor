@@ -1,5 +1,8 @@
 import React, { SFC, useEffect, useRef, RefObject, useState, } from "react";
 
+// css
+import "./style.scss";
+
 export interface PromptProps {
     prompt?: string;
     commands?: any[];

@@ -13,8 +13,8 @@ import Text from "../Text";
 import Image from "../Image";
 import Prompt, { PROMPT_DEFAULT } from "../Prompt";
 import Modal from "../Modal";
-
-// import Screen from "../Screen";
+import Scanlines from "../Scanlines";
+import Static from "../Static";
 
 // import sample data for development purposes
 import json from "../../data/sample.json";
@@ -27,6 +27,9 @@ interface AppState {
     activeDialogId: string; // which element, if any, is active
     loadingQueue: any[];
     status: AppStatus;
+
+    // dev
+    _static: boolean;
 }
 
 enum DialogType {
@@ -46,6 +49,7 @@ interface Dialog {
 enum ScreenType {
     Unknown = 0,
     Screen,
+    Static,
 }
 
 enum ScreenDataType {
@@ -96,6 +100,8 @@ class Phosphor extends Component<any, AppState> {
             activeDialogId: null,
             loadingQueue: [],
             status: AppStatus.Unset,
+
+            _static: true,
         };
 
         this._changeScreen = this._changeScreen.bind(this);
@@ -107,6 +113,7 @@ class Phosphor extends Component<any, AppState> {
         const {
             activeScreenId,
             activeDialogId,
+            _static,
         } = this.state;
 
         return (
@@ -116,7 +123,11 @@ class Phosphor extends Component<any, AppState> {
                 </section>
 
                 {activeDialogId && this._renderDialog()}
+
+                {/* scanlines should be the last child */}
+                <Scanlines />
             </div>
+
         );
     }
 
@@ -201,14 +212,29 @@ class Phosphor extends Component<any, AppState> {
     private _activateScreen(): void {
         const screen = this._getScreen(this.state.activeScreenId);
 
-        screen.content[0].state = ScreenDataState.Active;
-
         // update the app status
         const status = AppStatus.Active;
-        this.setState({
-            status,
-            activeElementId: screen.content[0].id,
-        });
+
+        // depending on the screen type, we perform different actions here
+        switch (screen.type) {
+            case ScreenType.Static:
+                this.setState({
+                    status,
+                });
+                break;
+
+            case ScreenType.Screen:
+                screen.content[0].state = ScreenDataState.Active;
+
+                this.setState({
+                    status,
+                    activeElementId: screen.content[0].id,
+                });
+                break;
+
+            default: // do nothing
+                break;
+        }
     }
 
     private _buildScreen(src: any): Screen {
@@ -218,7 +244,7 @@ class Phosphor extends Component<any, AppState> {
         const content = this._parseScreenContent(src.content).flat(); // flatten to one dimension
 
         // if this screen is invalid for any reason, skip it
-        if (!id || !type || !content.length) {
+        if (!id || !type) {
             return;
         }
 
@@ -233,6 +259,9 @@ class Phosphor extends Component<any, AppState> {
         switch (type.toLowerCase()) {
             case "screen":
                 return ScreenType.Screen;
+
+            case "static":
+                return ScreenType.Static;
 
             default:
                 return ScreenType.Unknown;
@@ -283,6 +312,10 @@ class Phosphor extends Component<any, AppState> {
     }
 
     private _parseScreenContent(content: any[]): ScreenData[] {
+        if (!content) {
+            return [];
+        }
+
         const parsed = content.map(element => this._parseScreenContentElement(element)).flat();
         return parsed.map(element => this._generateScreenData(element));
     }
