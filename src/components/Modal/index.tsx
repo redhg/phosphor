@@ -1,5 +1,7 @@
 import React, { SFC, useEffect, useCallback } from "react";
 
+import "./style.scss";
+
 export interface ModalProps {
     text: string | string[];
     className?: string;
@@ -33,7 +35,7 @@ const Modal: SFC<ModalProps> = (props) => {
             default:
                 break;
         }
-    }, []);
+    }, [onClose]);
 
     useEffect(() => {
         // mount

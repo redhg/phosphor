@@ -8,7 +8,6 @@
             "id": "screen1",
             "type": "screen",
             "content": [
-                "",
                 "This is the first line of the content.",
                 {
                     "type": "text",

@@ -1,5 +1,7 @@
 import React, { SFC, useEffect } from "react";
 
+import "./style.scss";
+
 export interface LinkProps {
     text: string;
     target: string;

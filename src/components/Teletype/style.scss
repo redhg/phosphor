@@ -1,0 +1,12 @@
+@import "../../assets/sass/colors";
+
+.__teletype__ {
+    .cursor {
+        color: rgba($background, 0.2);
+        background: $foreground;
+    }
+
+    .hidden {
+        visibility: hidden;
+    }
+}
