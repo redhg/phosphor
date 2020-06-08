@@ -12,7 +12,6 @@ export interface BitmapProps {
 const TICK = 150;
 const STEPS = [
     0.01,
-    0.01,
     0.02,
     0.03,
     0.05,
@@ -85,6 +84,8 @@ function loadImage(url) {
                 const w = img.width;
                 const h = img.height;
 
+                // todo: max dimensions
+                // make sure width is no larger than container width
                 canvas.width = w;
                 canvas.height = h;
 
@@ -101,12 +102,13 @@ function loadImage(url) {
     }, [src, img]);
 
     useEffect(() => {
-        setTimeout(() => loadImage(), 5000);
+        // setTimeout(() => loadImage(), 5000);
+        loadImage();
     }, [loading, setLoading, loadImage]);
 
     return (
         <div className={css}>
-            {loading && <div>...</div>}
+            {loading && <div className="progressbar" />}
             <canvas ref={ref} />
         </div>
     );

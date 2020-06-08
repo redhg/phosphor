@@ -37,6 +37,11 @@
                     "text": "> NEXT"
                 },
                 {
+                    "type": "link",
+                    "target": "screen0",
+                    "text": "> BACK"
+                },
+                {
                     "type": "prompt",
                     "prompt": "Enter command: ",
                     "commands": [
@@ -45,6 +50,13 @@
                             "action": {
                                 "type": "link",
                                 "target": "screen2"
+                            }
+                        },
+                        {
+                            "command": "back",
+                            "action": {
+                                "type": "link",
+                                "target": "screen0"
                             }
                         },
                         {

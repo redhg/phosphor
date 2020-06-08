@@ -1,5 +1,14 @@
+@import "../../assets/sass/progressbar";
+
 .__image__ {
-    img {
-        width: 100%
+    .progressbar {
+        &::after {
+            content: "";
+            animation: loadingdots 1.5s ease-in infinite;
+        }
+    }
+
+    canvas {
+        max-width: 100%;
     }
 }
