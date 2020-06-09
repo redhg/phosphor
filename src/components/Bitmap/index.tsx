@@ -1,4 +1,4 @@
-import React, { SFC, useCallback, useEffect, useState, useRef, RefObject, } from "react";
+import React, { Component, RefObject, ReactElement, } from "react";
 import "./style.scss";
 
 export interface BitmapProps {
@@ -7,6 +7,11 @@ export interface BitmapProps {
     alt?: string;
     autocomplete?: boolean;
     onComplete: () => void; // event called on completion
+}
+
+interface BitmapState {
+    loading: boolean;
+    image: HTMLImageElement;
 }
 
 const TICK = 150;
@@ -24,65 +29,93 @@ const STEPS = [
     1.00,
 ];
 
-const Bitmap: SFC<BitmapProps> = (props) => {
-    let ref: RefObject<HTMLCanvasElement> = useRef();
-    let animateTimerId: number = null;
-    let currentStep = 0;
+class Bitmap extends Component<BitmapProps, BitmapState> {
+    private _canvasRef: RefObject<HTMLCanvasElement> = null;
+    private _animateTimerId: number = null;
+    private _currentStep = 0;
 
-    const img = new Image();
+    constructor(props: BitmapProps) {
+        super(props);
 
-    const { autocomplete, src, className, onComplete } = props;
-    const css = ["__image__", className ? className : null].join(" ").trim();
+        this._canvasRef = React.createRef<HTMLCanvasElement>();
+        const loading = !this.props.autocomplete;
 
-    const [loading, setLoading] = useState(!autocomplete);
-/*
-function loadImage(url) {
-  return new Promise(r => { let i = new Image(); i.onload = (() => r(i)); i.src = url; });
-}
-*/
-    // animation routines
-    const resampleImage = (resolution: number) => {
-        const canvas = ref.current;
+        this.state = {
+            loading,
+            image: new Image(),
+        };
+    }
+
+    public render(): ReactElement {
+        const { className } = this.props;
+        const { loading } = this.state;
+        const css = ["__image__", className ? className : null].join(" ").trim();
+
+        return (
+            <div className={css}>
+                {loading && <div className="progressbar" />}
+                <canvas ref={this._canvasRef} />
+            </div>
+        );
+    }
+
+    public componentDidMount(): void {
+        console.log(this.state.image);
+        this._loadImage();
+    }
+
+    private _resampleImage(resolution: number): void {
+        const { image, } = this.state;
+        const canvas = this._canvasRef.current;
         const ctx = canvas.getContext("2d");
 
-        const w = img.width;
-        const h = img.height;
+        const w = image.width;
+        const h = image.height;
 
         const dw = w * resolution;
         const dh = h * resolution;
 
+        // trun off smoothing to ensure it's pixelated
         ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(img, 0, 0, dw, dh);
+        // shrink the image
+        ctx.drawImage(image, 0, 0, dw, dh);
+        // then draw the above bitmap at then expected image size without resampling
         ctx.drawImage(canvas, 0, 0, dw, dh, 0, 0, w, h);
-    };
-    const clearAnimationTimer = () => {
-        if (animateTimerId) {
-            window.clearInterval(animateTimerId);
-            animateTimerId = null;
+    }
+
+    private _clearAnimationTimer = () => {
+        if (this._animateTimerId) {
+            window.clearInterval(this._animateTimerId);
+            this._animateTimerId = null;
         }
     };
-    const animate = () => {
-        clearAnimationTimer();
-        animateTimerId = window.setInterval(() => {
-            if (currentStep < STEPS.length) {
-                resampleImage(STEPS[currentStep]);
-                currentStep++;
+
+    private _animate(): void {
+        const { onComplete, } = this.props;
+
+        this._clearAnimationTimer();
+        this._animateTimerId = window.setInterval(() => {
+            if (this._currentStep < STEPS.length) {
+                this._resampleImage(STEPS[this._currentStep]);
+                this._currentStep++;
             } else {
-                clearAnimationTimer();
+                this._clearAnimationTimer();
                 onComplete && onComplete();
             }
         }, TICK);
-    };
+    }
 
-    const loadImage = useCallback(() => {
-        const canvas = ref.current;
+    private _loadImage(): void {
+        const { autocomplete, onComplete, src, } = this.props;
+        const { image } = this.state;
+        const canvas = this._canvasRef.current;
         const ctx = canvas.getContext("2d");
 
-        if (ctx) {
-            img.onload = () => {
+        if (ctx && image) {
+            image.onload = () => {
                 // resize the canvas element
-                const w = img.width;
-                const h = img.height;
+                const w = image.width;
+                const h = image.height;
 
                 // todo: max dimensions
                 // make sure width is no larger than container width
@@ -90,28 +123,17 @@ function loadImage(url) {
                 canvas.height = h;
 
                 if (!autocomplete) {
-                    setLoading(false);
-                    animate();
+                    this.setState({
+                        loading: false,
+                    }, () => this._animate());
                 } else {
-                    ctx.drawImage(img, 0, 0);
+                    ctx.drawImage(image, 0, 0);
                     onComplete && onComplete();
                 }
             };
-            img.src = src;
+            image.src = src;
         }
-    }, [src, img]);
-
-    useEffect(() => {
-        // setTimeout(() => loadImage(), 5000);
-        loadImage();
-    }, [loading, setLoading, loadImage]);
-
-    return (
-        <div className={css}>
-            {loading && <div className="progressbar" />}
-            <canvas ref={ref} />
-        </div>
-    );
-};
+    }
+}
 
 export default Bitmap;
