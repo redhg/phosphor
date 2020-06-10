@@ -10,9 +10,17 @@ html, body {
 
     user-select: none;
     text-shadow: $foreground-glow;
+
+    height: 100%;
+    margin: 0;
 }
 
 body {
     margin: 0;
+    background-image: radial-gradient(rgba($foreground, 0.1), rgba($background, 0.1) 100%);
+    height: 100%;
+}
+
+.phosphor {
     padding: $lineheight;
 }

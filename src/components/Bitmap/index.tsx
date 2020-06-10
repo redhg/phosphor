@@ -15,6 +15,7 @@ interface BitmapState {
 }
 
 const TICK = 150;
+// ersatz Fibonacci sequence
 const STEPS = [
     0.01,
     0.02,
