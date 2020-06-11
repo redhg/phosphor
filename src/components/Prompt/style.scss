@@ -1,5 +1,25 @@
+@import "../../assets/sass/colors";
+
 .__prompt__ {
-    span.input {
+    &.cursor::after {
+        content: "|";
+        background-color: $foreground;
+        color: $foreground;
+        animation: blink 1s steps(5, start) infinite;
+    }
+
+    .input {
         text-transform: uppercase;
     }
 }
+
+@keyframes blink {
+    to {
+      visibility: hidden;
+    }
+  }
+  @-webkit-keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+  }

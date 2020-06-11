@@ -51,6 +51,7 @@
                 {
                     "type": "prompt",
                     "prompt": "Enter command: ",
+                    "className": "cursor",
                     "commands": [
                         {
                             "command": "next",
