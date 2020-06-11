@@ -438,6 +438,7 @@ class Phosphor extends Component<any, AppState> {
                     onComplete={handleRendered}
                     onNewLine={this._handleTeletypeNewLine}
                     autocomplete={false}
+                    className={element.className}
                 />
             );
         }

@@ -8,7 +8,11 @@
             "id": "screen0",
             "type": "screen",
             "content": [
-                "The Bitmap component, as seen in the following image of Grumpy Cat, loads slowly & deliberately but with a cool effect.\nCheck it out!\n",
+                {
+                    "type": "text",
+                    "text": "The Bitmap component, as seen in the following image of Grumpy Cat, loads slowly & deliberately but with a cool effect.\nCheck it out!\n",
+                    "className": "alert"
+                },
                 {
                     "type": "bitmap",
                     "src": "https://i.imgur.com/rDjphNY.jpg",

@@ -24,3 +24,13 @@ body {
 .phosphor {
     padding: $lineheight;
 }
+
+.alert {
+    color: $alert;
+    text-shadow: $alert-glow;
+
+    & > span.cursor {
+        color: $alert;
+        background-color: rgba($alert, 0.75);
+    }
+}
