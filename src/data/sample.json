@@ -12,7 +12,8 @@
                 {
                     "type": "bitmap",
                     "src": "https://i.imgur.com/rDjphNY.jpg",
-                    "alt": "Grumpy Cat test image"
+                    "alt": "Grumpy Cat test image",
+                    "className": "monochrome"
                 },
                 "",
                 {

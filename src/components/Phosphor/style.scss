@@ -17,7 +17,7 @@ html, body {
 
 body {
     margin: 0;
-    background-image: radial-gradient(rgba($foreground, 0.1), rgba($background, 0.1) 100%);
+    background-image: $background-gradient;
     height: 100%;
 }
 

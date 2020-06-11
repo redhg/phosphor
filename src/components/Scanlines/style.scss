@@ -21,8 +21,8 @@
     $scan-fps: 60;
 
     // scanline-color (rgba)
-    $scan-color: rgba($foreground, 0.1);
-    $scan-background: rgba($background, 0.2);
+    $scan-color: $scanlines-foreground;
+    $scan-background: $scanlines-background;
 
     // set z-index on 2147483648 or more to enable scanlines on Chrome fullscreen (doesn't work in Firefox or IE);
     $scan-z-index: 2147483648;

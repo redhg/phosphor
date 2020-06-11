@@ -11,4 +11,8 @@
     canvas {
         max-width: 100%;
     }
+
+    &.monochrome {
+        mix-blend-mode: luminosity;
+    }
 }

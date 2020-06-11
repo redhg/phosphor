@@ -1,11 +1,26 @@
 // default: black bg, blue/white fg
 
 // TODO: add theme mixins
+// blue/white
 $foreground: rgb(212, 249, 250);
-$background: rgb(0, 13, 17);
+$background: rgb(0, 12, 12);
 
-$scanlines-foreground: rgba(15, 61, 73, 0.4);
-$scanlines-background: rgba(0, 31, 36, 0.2);
+// amber
+// $foreground: rgb(224, 125, 11);
+// $background: rgb(8, 4, 0);
 
-$foreground-glow: 0 0 5px rgba(218, 254, 255, 0.5);
-$background-glow: 0 0 2px rgba(0, 13, 17, 0.5);
+// green
+// $foreground: rgb(36, 161, 20);
+// $background: rgb(0, 2, 0);
+
+// white
+// $foreground: rgb(218, 218, 218);
+// $background: rgb(2, 2, 2);
+
+$scanlines-foreground: rgba($foreground, 0.1);
+$scanlines-background: rgba($background, 0.5);
+
+$foreground-glow: 0 0 5px rgba($foreground, 0.5);
+$background-glow: 0 0 2px rgba($background, 0.5);
+
+$background-gradient: radial-gradient(rgba($foreground, 0.15), rgba($background, 1) 100%)
