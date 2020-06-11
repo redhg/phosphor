@@ -1,0 +1,99 @@
+{
+    "config": {},
+    "screens": [
+        {
+            "id": "screen0",
+            "type": "screen",
+            "content": [
+                "YPSILON-14",
+                "==========",
+                "",
+                "Welcome to the Ypsilon-14 Mining Station, a property of ISHIYAMA DYNAMICS (c), where innovation is our top priority (tm).",
+                "==========",
+                "",
+                {
+                    "text": "> LOG IN",
+                    "type": "link",
+                    "target": "menu"
+                }
+            ]
+        },
+        {
+            "id": "menu",
+            "type": "screen",
+            "content": [
+                "Main Menu",
+                "=========",
+                "",
+                {
+                    "text": "> DIAGNOSTICS",
+                    "type": "link",
+                    "target": "diagnostics"
+                },
+                {
+                    "text": "> SCHEDULE",
+                    "type": "link",
+                    "target": "schedule"
+                },
+                {
+                    "text": "> ROSTER",
+                    "type": "link",
+                    "target": "roster"
+                },
+                {
+                    "text": "> COMMS",
+                    "type": "link",
+                    "target": "comms"
+                },
+                {
+                    "text": "> CONTROLS",
+                    "type": "link",
+                    "target": "controls"
+                }
+            ]
+        },
+        {
+            "id": "diagnostics",
+            "type": "screen",
+            "content": [
+
+            ]
+        },
+        {
+            "id": "schedule",
+            "type": "screen",
+            "content": [
+
+            ]
+        },
+        {
+            "id": "roster",
+            "type": "screen",
+            "content": [
+
+            ]
+        },
+        {
+            "id": "comms",
+            "type": "screen",
+            "content": [
+
+            ]
+        },
+        {
+            "id": "controls",
+            "type": "screen",
+            "content": [
+
+            ]
+        },
+        {
+            "id": "screen1",
+            "type": "screen",
+            "content": [
+
+            ]
+        }
+    ],
+    "dialogs": []
+}
