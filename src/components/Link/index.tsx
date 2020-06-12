@@ -2,11 +2,11 @@ import React, { SFC, useEffect } from "react";
 
 import "./style.scss";
 
-enum LinkTargetType {
-    Unknown = 0,
-    Screen,
-    Dialog,
-}
+// enum LinkTargetType {
+//     Unknown = 0,
+//     Screen,
+//     Dialog,
+// }
 
 interface LinkTarget {
     target: string;
