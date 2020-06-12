@@ -6,7 +6,6 @@ html, body {
     font-size: $fontsize;
     line-height: $lineheight;
     color: $foreground;
-    background: $background;
 
     user-select: none;
     text-shadow: $foreground-glow;
@@ -17,6 +16,7 @@ html, body {
 
 body {
     margin: 0;
+    background: $background;
     background-image: $background-gradient;
     height: 100%;
 }

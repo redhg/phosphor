@@ -18,8 +18,8 @@ import Modal from "../Modal";
 import Scanlines from "../Scanlines";
 
 // import sample data for development purposes
-import json from "../../data/sample.json";
-// import json from "../../data/ypsilon14.json";
+// import json from "../../data/sample.json";
+import json from "../../data/ypsilon14.json";
 
 interface AppState {
     screens: Screen[];
@@ -729,7 +729,8 @@ class Phosphor extends Component<any, AppState> {
 
     private _handleTeletypeNewLine(): void {
         // TODO: handle lineheight/scrolling
-        const ref = this._containerRef;
+        // const ref = this._containerRef;
+        void 0;
         // console.log("scrolling!", ref);
         // const lineheight = this.props.measurements.lineHeight;
         // if (ref) {

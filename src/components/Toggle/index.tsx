@@ -31,9 +31,9 @@ const Toggle: SFC<ToggleProps> = (props) => {
     // events
     const handleRendered = () => (onRendered && onRendered());
     const handleClick = useCallback(() => {
-        if (state) {
+        if (active) {
             // get the active index;
-            const index = states.findIndex(element => element === state);
+            const index = states.findIndex(element => element === active);
             // unset everything
             states.forEach(element => element.active = false);
             // set the next active element
@@ -41,7 +41,7 @@ const Toggle: SFC<ToggleProps> = (props) => {
             next.active = true;
             setActive(next);
         }
-    }, [state, states, active, setActive]);
+    }, [states, active, setActive]);
 
     // this should fire on mount/update
     useEffect(() => handleRendered());

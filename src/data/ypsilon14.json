@@ -56,14 +56,52 @@
             "id": "diagnostics",
             "type": "screen",
             "content": [
-
+                "Diagnostics",
+                "===========",
+                "",
+                "Checking life support.",
+                "..........................................",
+                "Done.",
+                "",
+                "Checking main systems.",
+                "..........................................",
+                "..........................................",
+                "..........................................",
+                "Done.",
+                "",
+                { "text": "WARNING: Airflow 82.4%. Check vents for blockage.", "className" : "alert", "type": "text" },
+                { "text": "WARNING: Shower #5 non-functional as of 1 day(s).", "className" : "alert", "type": "text" },
+                "",
+                "NOTICE: Air filters replaced 455 day(s) ago.",
+                "NOTICE: Mineshaft lift maintained 455 day(s) ago.",
+                "",
+                "===========",
+                "",
+                "SUMMARY:",
+                "All systems operating within acceptible parameters.",
+                "",
+                "======",
+                "",
+                { "text": "< BACK", "target": "menu", "type": "link" }
             ]
         },
         {
             "id": "schedule",
             "type": "screen",
             "content": [
-
+                "Schedule",
+                "========",
+                "",
+                "Docking bay activity (past 6 months):",
+                "",
+                "23660702.0633 - Bay 2 : Arrive :: Tempest",
+                "23660604.0834 - Bay 1 : Arrive :: Heracles",
+                "23660302.1223 - Bay 2 : Depart :: Magnus",
+                "23660220.1604 - Bay 2 : Arrive :: Magnus",
+                "",
+                "======",
+                "",
+                { "text": "< BACK", "target": "menu", "type": "link" }
             ]
         },
         {
@@ -84,7 +122,19 @@
             "id": "controls",
             "type": "screen",
             "content": [
-
+                "Controls",
+                "========",
+                "",
+                "[A] :: Administrator access only",
+                "",
+                { "text": "> SHOWERS", "target": "showers", "type": "link" },
+                { "text": "> HYDROPONICS LAB", "target": "greenhouse", "type": "link" },
+                { "text": "> AIRLOCKS [A]", "target": "airlocks", "type": "link" },
+                { "text": "> SYSTEM [A]", "target": "system", "type": "link" },
+                "",
+                "======",
+                "",
+                { "text": "< BACK", "target": "menu", "type": "link" }
             ]
         },
         {
