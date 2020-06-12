@@ -22,7 +22,7 @@ const Link: SFC<LinkProps> = (props) => {
     useEffect(() => handleRendered());
 
     return (
-        <span className={css} onClick={handleClick}>{text}</span>
+        <div className={css} onClick={handleClick}>{text}</div>
     );
 };
 

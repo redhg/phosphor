@@ -1,0 +1,27 @@
+@import "../../assets/sass/fonts";
+@import "../../assets/sass/colors";
+
+.__toggle__ {
+    & {
+        cursor: pointer;
+        display: block;
+    }
+    &:hover,
+    &:active {
+        color: $background;
+        background: $foreground;
+        text-shadow: $background-glow;
+        box-shadow: $foreground-glow;
+        transition:  background 50ms, foreground 150ms;
+    }
+
+    &:hover {
+        opacity: 1;
+        transition: background 50ms, foreground 150ms;
+    }
+
+    &:active {
+        opacity: 0.5;
+        transition: opacity 50ms;
+    }
+}

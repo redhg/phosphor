@@ -12,6 +12,8 @@ import Link from "../Link";
 import Text from "../Text";
 import Bitmap from "../Bitmap";
 import Prompt, { PROMPT_DEFAULT } from "../Prompt";
+import Toggle from "../Toggle";
+
 import Modal from "../Modal";
 import Scanlines from "../Scanlines";
 
@@ -57,6 +59,7 @@ enum ScreenDataType {
     Link,
     Bitmap,
     Prompt,
+    Toggle,
 }
 
 enum ScreenDataState {
@@ -406,6 +409,14 @@ class Phosphor extends Component<any, AppState> {
                     onLoad,
                 };
 
+            case "toggle":
+                return {
+                    id,
+                    type: ScreenDataType.Toggle,
+                    states: element.states,
+                    state,
+                };
+
             default:
                 return;
         }
@@ -428,8 +439,25 @@ class Phosphor extends Component<any, AppState> {
 
         // if the element is text-based, like text or Link, render instead a
         // teletype component
-        if (type === ScreenDataType.Text || type === ScreenDataType.Link || type === ScreenDataType.Prompt) {
+        if (type === ScreenDataType.Text || type === ScreenDataType.Link || type === ScreenDataType.Prompt
+        ) {
             const text = type === ScreenDataType.Prompt ? element.prompt : element.text;
+            const handleRendered = () => this._activateNextScreenData();
+            return (
+                <Teletype
+                    key={key}
+                    text={text}
+                    onComplete={handleRendered}
+                    onNewLine={this._handleTeletypeNewLine}
+                    autocomplete={false}
+                    className={element.className}
+                />
+            );
+        }
+
+        // the toggle gets its text from the states array
+        if (type === ScreenDataType.Toggle) {
+            const text = element.states.find((item: any) => item.active === true).text;
             const handleRendered = () => this._activateNextScreenData();
             return (
                 <Teletype
@@ -524,6 +552,17 @@ class Phosphor extends Component<any, AppState> {
                     prompt={element.prompt}
                     commands={element.commands}
                     onCommand={this._handlePromptCommand}
+                />
+            );
+        }
+
+        // prompt
+        if (element.type === ScreenDataType.Toggle) {
+            return (
+                <Toggle
+                    key={key}
+                    className={className}
+                    states={element.states}
                 />
             );
         }
@@ -691,7 +730,7 @@ class Phosphor extends Component<any, AppState> {
     private _handleTeletypeNewLine(): void {
         // TODO: handle lineheight/scrolling
         const ref = this._containerRef;
-        console.log("scrolling!", ref);
+        // console.log("scrolling!", ref);
         // const lineheight = this.props.measurements.lineHeight;
         // if (ref) {
         //     ref.current.scrollTop += lineheight;

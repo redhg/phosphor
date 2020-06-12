@@ -61,7 +61,6 @@ class Bitmap extends Component<BitmapProps, BitmapState> {
     }
 
     public componentDidMount(): void {
-        console.log(this.state.image);
         this._loadImage();
     }
 

@@ -8,17 +8,6 @@
             "id": "screen0",
             "type": "screen",
             "content": [
-                {
-                    "type": "text",
-                    "text": "The Bitmap component, as seen in the following image of Grumpy Cat, loads slowly & deliberately but with a cool effect.\nCheck it out!\n",
-                    "className": "alert"
-                },
-                {
-                    "type": "bitmap",
-                    "src": "https://i.imgur.com/rDjphNY.jpg",
-                    "alt": "Grumpy Cat test image",
-                    "className": "monochrome"
-                },
                 "",
                 {
                     "type": "link",
@@ -29,6 +18,23 @@
                     "type": "link",
                     "target": "screen1",
                     "text": "> NEXT"
+                },
+                {
+                    "type": "toggle",
+                    "states": [
+                        {
+                            "active": true,
+                            "text": "> This is the first record!"
+                        },
+                        {
+                            "active": false,
+                            "text": "> This is the second record!"
+                        },
+                        {
+                            "active": false,
+                            "text": "> This is the third record!"
+                        }
+                    ]
                 }
             ]
         },
