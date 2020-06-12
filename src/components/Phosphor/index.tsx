@@ -115,6 +115,7 @@ class Phosphor extends Component<any, AppState> {
         this._setElementState = this._setElementState.bind(this);
         this._handlePromptCommand = this._handlePromptCommand.bind(this);
         this._handleTeletypeNewLine = this._handleTeletypeNewLine.bind(this);
+        this._handleLinkClick = this._handleLinkClick.bind(this);
     }
 
     public render(): ReactElement {
@@ -518,7 +519,7 @@ class Phosphor extends Component<any, AppState> {
                     text={element.text}
                     target={element.target}
                     className={className}
-                    onClick={this._changeScreen}
+                    onClick={this._handleLinkClick}
                     onRendered={handleRendered}
                 />
             );
@@ -671,10 +672,10 @@ class Phosphor extends Component<any, AppState> {
         screen.content[index].state = ScreenDataState.Active;
     }
 
-    private _toggleDialog(targetDialogId?: string): void {
+    private _toggleDialog(dialogId?: string): void {
         // TODO: check if targetDialog is a valid dialog
         this.setState({
-            activeDialogId: targetDialogId || null,
+            activeDialogId: dialogId || null,
         });
     }
 
@@ -736,6 +737,30 @@ class Phosphor extends Component<any, AppState> {
         // if (ref) {
         //     ref.current.scrollTop += lineheight;
         // }
+    }
+
+    private _handleLinkClick(target: string | any[], shiftKey: boolean): void {
+        // if it's a string, it's a screen
+        if (typeof target === "string") {
+            this._changeScreen(target);
+            return;
+        }
+
+        // otherwise, it's a LinkTarget array
+        const linkTarget = (target as any[]).find(element => element.shiftKey === shiftKey);
+        if (linkTarget) {
+            // perform the appropriate action based on type
+            // TODO: type-check the object
+            if (linkTarget.type === "dialog") {
+                this._toggleDialog(linkTarget.target);
+                return;
+            }
+
+            if (linkTarget.type === "link") {
+                this._changeScreen(linkTarget.target);
+                return;
+            }
+        }
     }
 }
 
