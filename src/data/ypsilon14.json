@@ -75,15 +75,8 @@
                 "Diagnostics",
                 "===========",
                 "",
-                "Checking life support.",
-                "..........................................",
-                "Done.",
-                "",
-                "Checking main systems.",
-                "..........................................",
-                "..........................................",
-                "..........................................",
-                "Done.",
+                "Checking life support.............. Done.",
+                "Checking main systems.............. Done.",
                 "",
                 { "text": "WARNING: Airflow 82.4%. Check vents for blockage.", "className" : "alert", "type": "text" },
                 { "text": "WARNING: Shower #5 non-functional as of 1 day(s).", "className" : "alert", "type": "text" },
@@ -145,8 +138,38 @@
                 "",
                 { "text": "> SHOWERS", "target": "showers", "type": "link" },
                 { "text": "> HYDROPONICS LAB", "target": "greenhouse", "type": "link" },
-                { "text": "> AIRLOCKS [A]", "target": "airlocks", "type": "link" },
-                { "text": "> SYSTEM [A]", "target": "system", "type": "link" },
+                {
+                    "text": "> AIRLOCKS [A]",
+                    "type": "link",
+                    "target": [
+                        {
+                            "target": "lockedDialog",
+                            "type": "dialog",
+                            "shiftKey": false
+                        },
+                        {
+                            "target": "airlocks",
+                            "type": "link",
+                            "shiftKey": true
+                        }
+                    ]
+                },
+                {
+                    "text": "> SYSTEM [A]",
+                    "type": "link",
+                    "target": [
+                        {
+                            "target": "lockedDialog",
+                            "type": "dialog",
+                            "shiftKey": false
+                        },
+                        {
+                            "target": "system",
+                            "type": "link",
+                            "shiftKey": true
+                        }
+                    ]
+                },
                 "",
                 "======",
                 "",
@@ -154,7 +177,74 @@
             ]
         },
         {
-            "id": "screen1",
+            "id": "airlocks",
+            "type": "screen",
+            "content": [
+                "Airlocks",
+                "========",
+                "",
+                {
+                    "type": "link",
+                    "text": "> DOCKING BAY 1 :: LOCKED",
+                    "target": [
+                        {
+                            "target": "airlockError",
+                            "type": "dialog",
+                            "shiftKey": false
+                        }
+                    ]
+                },
+                {
+                    "type": "toggle",
+                    "states": [
+                        {
+                            "text": "> DOCKING BAY 1 :: UNLOCKED",
+                            "active": true
+                        },
+                        {
+                            "text": "> DOCKING BAY 1 :: LOCKED",
+                            "active": false
+                        }
+                    ]
+                },
+                {
+                    "type": "toggle",
+                    "states": [
+                        {
+                            "text": "> DOCKING BAY 2 :: UNLOCKED",
+                            "active": true
+                        },
+                        {
+                            "text": "> DOCKING BAY 2 :: LOCKED",
+                            "active": false
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "screen12",
+            "type": "screen",
+            "content": [
+
+            ]
+        },
+        {
+            "id": "screen13",
+            "type": "screen",
+            "content": [
+
+            ]
+        },
+        {
+            "id": "screen14",
+            "type": "screen",
+            "content": [
+
+            ]
+        },
+        {
+            "id": "screen15",
             "type": "screen",
             "content": [
 
@@ -167,6 +257,15 @@
             "type": "alert",
             "content": [
                 "Error! Authorization required."
+            ]
+        },
+        {
+            "id": "airlockError",
+            "type": "alert",
+            "content": [
+                "ERROR! Lock override in effect.",
+                "",
+                "Cannot unlock remotely. Manual intervention required."
             ]
         }
     ]
