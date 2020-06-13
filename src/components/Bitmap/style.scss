@@ -15,4 +15,12 @@
     &.monochrome {
         mix-blend-mode: luminosity;
     }
+
+    &.luminosity {
+        mix-blend-mode: luminosity;
+    }
+
+    &.lighten {
+        mix-blend-mode: lighten;
+    }
 }
