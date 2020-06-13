@@ -1,4 +1,25 @@
+# PHOSPHOR
+### A retro terminal simulator for tabletop role-playing games
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+To install this project, open a terminal window and cd into the repo's directory, then run
+### `npm install`.
+
+## An important note about this project
+
+ will not be accepting pull requests, nor will I be paying attention to the issues. I suggest you clone this repo if you want to make any public changes. It's poorly written and I don't care. It's all for fun, so I'm just be noodling around without a particular goal.
+
+That being said, I'd love to see what *you* can do with my garabge project, so send me an email at phosphor <at> redhg <dot> com to let me know how you've expanded it!
+
+Suggested features:
+* Sound effects;
+* Autoscrolling or auto-pause/press space to continue at end of screen;
+* Asset preloader;
+* JSON uploading & parsing;
+* Routing support;
+* Dynamic themes -- I've added some colour values in `_colors.scss` but they don't work yet;
+* Links, Prompts, Images, and Teletype support *within* Dialogs.
 
 ## Available Scripts
 
