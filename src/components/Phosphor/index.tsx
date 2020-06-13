@@ -18,8 +18,7 @@ import Modal from "../Modal";
 import Scanlines from "../Scanlines";
 
 // import sample data for development purposes
-// import json from "../../data/sample.json";
-import json from "../../data/ypsilon14.json";
+import json from "../../data/sample.json";
 
 interface AppState {
     screens: Screen[];

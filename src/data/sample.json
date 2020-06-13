@@ -8,33 +8,23 @@
             "id": "screen0",
             "type": "screen",
             "content": [
+                "Screen content can be a string. And that string can contain\n\nlinebreaks.",
                 "",
+                "Or it can be an empty string like the above entry.",
+                { "type": "text", "text": "Or it can be an Object with an specific CSS 'className' property, like 'alert', currently the only one.", "className": "alert" },
+                "",
+                "Links to other Screens can be rendered, too. Linking to the current screen's ID will cause it to redraw. Like this:",
                 {
                     "type": "link",
                     "target": "screen0",
-                    "text": "> RELOAD"
+                    "text": "> CLICK TO RELOAD THIS SCREEN"
                 },
+                "",
+                "Linking instead to a different screen's ID will, naturally, render that screen's content.",
                 {
                     "type": "link",
                     "target": "screen1",
                     "text": "> NEXT"
-                },
-                {
-                    "type": "toggle",
-                    "states": [
-                        {
-                            "active": true,
-                            "text": "> This is the first record!"
-                        },
-                        {
-                            "active": false,
-                            "text": "> This is the second record!"
-                        },
-                        {
-                            "active": false,
-                            "text": "> This is the third record!"
-                        }
-                    ]
                 }
             ]
         },
@@ -42,34 +32,37 @@
             "id": "screen1",
             "type": "screen",
             "content": [
-                "This is the first line of the content.",
+                "Text is great an all, but what about toggle buttons? Oh, yeah, we got that. Toggle buttons cycle through their states, starting with which every has 'active: true'.",
+                "You can click the following button several times to cycle through it available states",
+                "",
                 {
-                    "type": "text",
-                    "text": "this is a text object",
-                    "className": "blahblahblah"
+                    "type": "toggle",
+                    "states": [
+                        {
+                            "active": true,
+                            "text": "> This is the first state!"
+                        },
+                        {
+                            "active": false,
+                            "text": "> This is the second state! The 'className' property is currently unsupported, it would seem :/",
+                            "className": "alert"
+                        },
+                        {
+                            "active": false,
+                            "text": "> This is the third state!"
+                        }
+                    ]
                 },
-                {
-                    "type": "link",
-                    "target": "screen2",
-                    "text": "> NEXT"
-                },
-                {
-                    "type": "link",
-                    "target": "screen0",
-                    "text": "> BACK"
-                },
+                "",
+                "There's also an module that accepts user input. It's very particular, and it uses a document-wide event listener which is pretty hacky. Semm what happens when you type the following commands:\n\n",
+                "BACK",
+                "DIALOG",
+                "IMAGE",
                 {
                     "type": "prompt",
                     "prompt": "Enter command: ",
                     "className": "cursor",
                     "commands": [
-                        {
-                            "command": "next",
-                            "action": {
-                                "type": "link",
-                                "target": "screen2"
-                            }
-                        },
                         {
                             "command": "back",
                             "action": {
@@ -78,27 +71,31 @@
                             }
                         },
                         {
-                            "command": "console",
-                            "action": {
-                                "type": "console",
-                                "args": "whatever"
-                            }
-                        },
-                        {
-                            "command": "dialog1",
+                            "command": "dialog",
                             "action": {
                                 "type": "dialog",
                                 "target": "dialog1"
                             }
                         },
                         {
-                            "command": "dialog2",
+                            "command": "image",
                             "action": {
-                                "type": "dialog",
-                                "target": "locked"
+                                "type": "link",
+                                "target": "screen2"
                             }
                         }
                     ]
+                },
+                "\n",
+                {
+                    "type": "link",
+                    "target": "screen2",
+                    "text": "> IMAGE LOADING"
+                },
+                {
+                    "type": "link",
+                    "target": "screen1",
+                    "text": "> CLICK HERE TO RETURN TO THE FIRST SCREEN"
                 }
             ]
         },
@@ -106,11 +103,23 @@
             "id": "screen2",
             "type": "screen",
             "content": [
-                "\n\n\nThis is the second screen. It starts with numerous line breaks.",
-                "This is a content block.\nIt can contain multiple paragraphs and line breaks.\n\n\nSee?",
-                "Lorem ipsum dolor sit amet, mel fabulas blandit an, nullam integre feugiat eum an. In inimicus volutpat eum, quo ea elaboraret neglegentur. In ius postea adipisci expetendis, iudico latine epicuri pro id. Ei oblique feugiat definiebas eam, ad sea option fierent, his cu tritani invidunt. Te est dicunt praesent, ei cum illud iudicabit.",
+                "We can load images, too. Create an object of type \"bitmap\" with a src pointing to a URL and add an optional image effect className: \"luminosity\" or \"lighten\".",
+                {
+                    "type": "bitmap",
+                    "src": "https://i.imgur.com/rDjphNY.jpg"
+                },
+                {
+                    "type": "bitmap",
+                    "src": "https://i.imgur.com/rDjphNY.jpg",
+                    "className": "lighten"
+                },
+                {
+                    "type": "bitmap",
+                    "src": "https://i.imgur.com/rDjphNY.jpg",
+                    "className": "luminosity"
+                },
                 "\n",
-                "\n",
+                "Note that as of 2020-06-12, the above blend-modes appear broken in Chrome, but work just fine in Firefox & Safari of all things.",
                 {
                     "type": "link",
                     "target": "screen1",
