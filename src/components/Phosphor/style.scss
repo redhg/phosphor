@@ -18,6 +18,7 @@ body {
     margin: 0;
     background: $background;
     background-image: $background-gradient;
+    background-attachment: fixed;
     height: 100%;
 }
 
