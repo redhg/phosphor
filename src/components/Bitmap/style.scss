@@ -23,4 +23,56 @@
     &.lighten {
         mix-blend-mode: lighten;
     }
+
+    &.multiply {
+        mix-blend-mode: multiply;
+    }
+
+    &.screen {
+        mix-blend-mode: screen;
+    }
+
+    &.overlay {
+        mix-blend-mode: overlay;
+    }
+
+    &.darken {
+        mix-blend-mode: darken;
+    }
+
+    &.color-dodge {
+        mix-blend-mode: color-dodge;
+    }
+
+    &.color-burn {
+        mix-blend-mode: color-burn;
+    }
+
+    &.hard-light {
+        mix-blend-mode: hard-light;
+    }
+
+    &.soft-light {
+        mix-blend-mode: soft-light;
+    }
+
+    &.difference {
+        mix-blend-mode: difference;
+    }
+
+    &.exclusion {
+        mix-blend-mode: exclusion;
+    }
+
+    &.hue {
+        mix-blend-mode: hue;
+    }
+
+    &.saturation {
+        mix-blend-mode: saturation;
+    }
+
+    &.color {
+        mix-blend-mode: color;
+    }
 }
