@@ -32,7 +32,7 @@
             "id": "screen1",
             "type": "screen",
             "content": [
-                "Text is great an all, but what about toggle buttons? Oh, yeah, we got that. Toggle buttons cycle through their states, starting with which every has 'active: true'.",
+                "Text is great an all, but what about toggle buttons? Toggle buttons cycle through their states, starting with whichever has 'active: true'.",
                 "You can click the following button several times to cycle through it available states",
                 "",
                 {
@@ -40,21 +40,39 @@
                     "states": [
                         {
                             "active": true,
-                            "text": "> This is the first state!"
+                            "text": "> Hello."
                         },
                         {
                             "active": false,
-                            "text": "> This is the second state! The 'className' property is currently unsupported, it would seem :/",
-                            "className": "alert"
+                            "text": "> How are you?"
                         },
                         {
                             "active": false,
-                            "text": "> This is the third state!"
+                            "text": "> I am fine, thanks."
                         }
                     ]
                 },
                 "",
-                "There's also an module that accepts user input. It's very particular, and it uses a document-wide event listener which is pretty hacky. Semm what happens when you type the following commands:\n\n",
+                "Links can be configured to behave differently when <shift> is held down. Clicking the followwing link normally will show an alert dialog, but holding <shift> and clicking will navigate back to the first screen.",
+                "",
+                {
+                    "text": "> LOCKED LINK. Shift+click to unlock",
+                    "type": "link",
+                    "target": [
+                        {
+                            "target": "lockedDialog",
+                            "type": "dialog",
+                            "shiftKey": false
+                        },
+                        {
+                            "target": "screen0",
+                            "type": "link",
+                            "shiftKey": true
+                        }
+                    ]
+                },
+                "",
+                "There's also a module that accepts user input. It's very particular, and it uses a document-wide event listener which is pretty hacky. See what happens when you type the following commands:\n\n",
                 "BACK",
                 "DIALOG",
                 "IMAGE",
@@ -134,16 +152,17 @@
             "id": "dialog1",
             "type": "alert",
             "content": [
-                "this is the first line in the dialog.",
+                "This is the first line in the dialog.",
                 "And this is the second line.",
-                "Press <enter> to close."
+                "Press <enter>, <esc>, or click anywhere to close this dialog."
             ]
         },
         {
-            "id": "locked",
+            "id": "lockedDialog",
             "type": "alert",
             "content": [
-                "Error! Keycard required."
+                "This is a locked link. You'll need to <shift>+click to activate it.",
+                "Press <enter>, <esc>, or click anywhere to close this dialog."
             ]
         }
     ]

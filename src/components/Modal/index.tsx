@@ -39,10 +39,14 @@ const Modal: SFC<ModalProps> = (props) => {
 
     useEffect(() => {
         // mount
+        document.body.classList.add("static");
         document.addEventListener("keydown", handleKeyDown);
 
         // unmount
-        return () => document.removeEventListener("keydown", handleKeyDown);
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+            document.body.classList.remove("static");
+        };
     });
 
     return (
