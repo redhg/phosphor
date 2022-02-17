@@ -121,7 +121,7 @@
             "id": "screen2",
             "type": "screen",
             "content": [
-                "We can load images, too. Create an object of type \"bitmap\" with a src pointing to a URL and add an optional image effect className: \"luminosity\" or \"lighten\".",
+                "We can load images, too. Create an object of type \"bitmap\" with a src pointing to a URL and add an optional image effect className, such as \"luminosity\" or \"lighten\". See Bitmap/style.scss for a list of supported modes.",
                 {
                     "type": "bitmap",
                     "src": "https://i.imgur.com/rDjphNY.jpg"

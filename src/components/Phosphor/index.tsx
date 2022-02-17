@@ -17,8 +17,9 @@ import Toggle from "../Toggle";
 import Modal from "../Modal";
 import Scanlines from "../Scanlines";
 
-// import sample data for development purposes
-import json from "../../data/sample.json";
+// for different content, edit sample.json, or,
+// preferrably, create a new JSON and load it here
+import json from "../../data/ypsilon14.json";
 
 interface AppState {
     screens: Screen[];

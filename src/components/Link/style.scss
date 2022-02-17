@@ -24,4 +24,14 @@
         opacity: 0.5;
         transition: opacity 50ms;
     }
+
+    // alert class
+    &.alert:hover,
+    &.alert:active {
+        color: $background;
+        background: $alert;
+        text-shadow: $background-glow;
+        box-shadow: $alert-glow;
+        transition:  background 50ms, foreground 150ms;
+    }
 }
