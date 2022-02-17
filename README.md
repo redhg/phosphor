@@ -6,6 +6,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 To install this project, open a terminal window and `cd` into the repo's directory, then run
 ### `npm install`.
 
+## The Haunting of Ypsilon-14
+The inspiration for this little app was [Quadra's post](https://www.traaa.sh/the-ypsilon-14-terminal) about an ersatz terminal for [The Haunting of Ypsilon 14](https://www.mothershiprpg.com/pamphlet-adventures/#The_Haunting_Of_Ypsilon_14), a module written by D G Chapman for [the Mothership tabletop roleplaying game](https://www.mothershiprpg.com/).
+
+Because of that (and because I was asked on [the Mothership Discord](https://discord.gg/uuvxG29)), I've made the JSON content that I used when I ran the module available in this repo. To use it, just load the `ypsilon14.json` instead of `sample.json` at the top of `src/components/Phosphor/index.tsx`.
+
+Or you can skip doing it yourself and instead just check out [the Ypsilon 14 terminal in action](https://redhg.com/ypsilon14/).
+
 ## An important note about this project
 
  I will not be accepting pull requests, nor will I be paying attention to the issues. I suggest you fork this repo if you want to make any public changes. It's poorly written and I don't care. It's all for fun, so I'm just be noodling around without a particular goal.
