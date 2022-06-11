@@ -1,11 +1,6 @@
 # PHOSPHOR
 ### A retro terminal simulator for tabletop role-playing games
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-To install this project, open a terminal window and `cd` into the repo's directory, then run
-### `npm install`.
-
 ## The Haunting of Ypsilon 14
 The inspiration for this little app was [Quadra's post](https://www.traaa.sh/the-ypsilon-14-terminal) about an ersatz terminal for [The Haunting of Ypsilon 14](https://www.mothershiprpg.com/pamphlet-adventures/#The_Haunting_Of_Ypsilon_14), a module written by D G Chapman for [the Mothership tabletop roleplaying game](https://www.mothershiprpg.com/).
 
@@ -28,6 +23,15 @@ Suggested features:
 * Dynamic themes -- I've added some colour values in `_colors.scss` but they don't work yet;
 * Links, Prompts, Images, and Teletype support *within* Dialogs.
 
+---
+
+## Getting Started
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+To install this project, open a terminal window and `cd` into the repo's directory, then run
+### `npm install`.
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -44,6 +48,8 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+**Note:** as of June 11, 2022, there are absolutely no tests in this project and that's unlikely to change.
 
 ### `yarn build`
 
