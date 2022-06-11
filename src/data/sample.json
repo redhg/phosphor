@@ -33,7 +33,7 @@
             "type": "screen",
             "content": [
                 "Text is great an all, but what about toggle buttons? Toggle buttons cycle through their states, starting with whichever has 'active: true'.",
-                "You can click the following button several times to cycle through it available states",
+                "You can click the following button several times to cycle through its available states",
                 "",
                 {
                     "type": "toggle",
@@ -53,7 +53,7 @@
                     ]
                 },
                 "",
-                "Links can be configured to behave differently when <shift> is held down. Clicking the followwing link normally will show an alert dialog, but holding <shift> and clicking will navigate back to the first screen.",
+                "Links can be configured to behave differently when <shift> is held down. Clicking the following link normally will show an alert dialog, but holding <shift> and clicking will navigate back to the first screen. (This doesn't work on touch-only devices, obviously.)",
                 "",
                 {
                     "text": "> LOCKED LINK. Shift+click to unlock",
