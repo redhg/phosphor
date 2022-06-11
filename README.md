@@ -15,7 +15,7 @@ Or you can skip doing it yourself and instead just check out [the Ypsilon 14 ter
 
 ## An important note about this project
 
- I will not be accepting pull requests, nor will I be paying attention to the issues. I suggest you fork this repo if you want to make any public changes. It's poorly written and I don't care. It's all for fun, so I'm just be noodling around without a particular goal.
+ I will not be accepting pull requests, nor will I be paying attention to the issues. I suggest you fork this repo if you want to make any public changes. It's all just for fun; noodling around without a particular goal.
 
 That being said, I'd love to see what *you* can do with my garabge project, so send me an email at **phosphor {at} redhg {dot} com** to let me know how you've expanded it!
 
