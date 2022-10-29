@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 
 import "./style.scss";
 
@@ -11,35 +11,31 @@ import "./style.scss";
 interface LinkTarget {
     target: string;
     type: any;
-    locked?: boolean;
 }
 
 export interface LinkProps {
     text: string;
     target: string | LinkTarget[];
-    locked: boolean; // hide the action behind a shift key or long press
     className?: string;
 
     onClick?: (target: string | LinkTarget[], shiftKey: boolean) => void;
     onRendered?: () => void;
 }
 
-const LONGPRESS_DURATION = 1000; // 0.5 seconds = one long press
-
 const Link: FC<LinkProps> = (props) => {
-    const { text, target, className, onClick, onRendered, locked } = props;
+    const { text, target, className, onClick, onRendered } = props;
     const css = ["__link__", className ? className : null].join(" ").trim();
 
-    // const [timer, setTimer] = useState<number>(null);
-    // const [isLongPress, setIsLongPress] = useState(false);
-
-    // const [startTime, setStartTime] = useState<number>(0);
-
-    // events
-    // let ms = 0;
-    // const handleMouseDown = (e: React.MouseEvent<HTMLSpanElement>) => {
-    //     setStartTime(Date.now());
-    // };
+    let touches = 0;
+    const handleTouchStart = (e: React.TouchEvent<HTMLSpanElement>) => {
+        touches = e.touches.length;
+    };
+    const handleTouchEnd = (e: React.TouchEvent<HTMLSpanElement>) => {
+        e.preventDefault(); // prevents the click event firing
+        console.log("handleTouchEnd");
+        onClick && onClick(target, touches > 1);
+        touches = 0;
+    };
 
     const handleClick = (e: React.MouseEvent<HTMLSpanElement>) => {
         e.preventDefault();
@@ -51,16 +47,11 @@ const Link: FC<LinkProps> = (props) => {
     // this should fire on mount/update
     useEffect(() => handleRendered());
 
-    const handleTouchEnd = (e: React.TouchEvent<HTMLSpanElement>) => {
-        e.preventDefault(); // prevents the click event firing
-        console.log("handleTouchEnd");
-        onClick && onClick(target, e.touches.length > 1);
-    };
-
     return (
         <span
             className={css}
             onClick={handleClick}
+            onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
         >
             {text}

@@ -513,11 +513,6 @@ class Phosphor extends Component<any, AppState> {
 
         // link
         if (element.type === ScreenDataType.Link) {
-            let locked = false;
-            if (element?.target instanceof Array) {
-                locked = (element.target as any[]).find(el => el.shiftKey)?.shiftKey;
-            }
-
             return (
                 <Link
                     key={key}
@@ -526,7 +521,6 @@ class Phosphor extends Component<any, AppState> {
                     className={className}
                     onClick={this._handleLinkClick}
                     onRendered={handleRendered}
-                    locked={locked}
                 />
             );
         }
