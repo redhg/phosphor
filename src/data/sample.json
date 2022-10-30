@@ -5,39 +5,6 @@
     },
     "screens": [
         {
-            "id": "screenX",
-            "type": "screen",
-            "content": [
-                "Shift+click  doubleclick",
-                {
-                    "text": "> LOCKED LINK. Shift+click to unlock",
-                    "type": "link",
-                    "target": [
-                        {
-                            "target": "noDialog",
-                            "type": "dialog",
-                            "shiftKey": false
-                        },
-                        {
-                            "target": "yesDialog",
-                            "type": "dialog",
-                            "shiftKey": true
-                        }
-                    ]
-                },
-                "",
-                "",
-                {
-                    "type": "link",
-                    "target": "screenX",
-                    "text": "> CLICK TO RELOAD THIS SCREEN"
-                }
-            ]
-        },
-
-
-
-        {
             "id": "screen0",
             "type": "screen",
             "content": [
@@ -196,20 +163,6 @@
             "content": [
                 "This is a locked link. You'll need to <shift>+click to activate it.",
                 "Press <enter>, <esc>, or click anywhere to close this dialog."
-            ]
-        },
-        {
-            "id": "yesDialog",
-            "type": "alert",
-            "content": [
-                "YES!!!!!."
-            ]
-        },
-        {
-            "id": "noDialog",
-            "type": "alert",
-            "content": [
-                "no :("
             ]
         }
     ]
