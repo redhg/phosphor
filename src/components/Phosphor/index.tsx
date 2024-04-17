@@ -19,7 +19,7 @@ import Scanlines from "../Scanlines";
 
 // for different content, edit sample.json, or,
 // preferrably, create a new JSON and load it here
-import json from "../../data/sample.json";
+import json from "../../data/ypsilon14.json";
 
 interface AppState {
     screens: Screen[];
