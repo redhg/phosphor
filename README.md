@@ -1,3 +1,6 @@
+> [!WARNING]
+> This project is based on the now-defunct [Create React App framework](https://github.com/facebook/create-react-app) and is woefujlly out of date, meaning vulnerable packages have not necessarily been updated. **_USE AT YOUR OWN RISK_**.
+
 # PHOSPHOR
 ### A retro terminal simulator for tabletop role-playing games
 
